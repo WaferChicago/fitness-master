@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 
 @Service
@@ -19,6 +20,7 @@ public class PositionQueueService {
     }
 
     @RabbitListener(queues = "fit.queue.pos")
+    @Transactional
     public void receive(Message msg, HashMap<String, Object> data){
         String key = msg.getMessageProperties().getReceivedRoutingKey();
         String serial = (String) data.get("serial");
